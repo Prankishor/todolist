@@ -1,0 +1,61 @@
+.header {
+    display: flex;
+    justify-content: center;
+}
+
+.title {
+    margin: 3rem;
+}
+
+.title p {
+    font-size: xxx-large;
+    font-weight: 500;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+.addTodoContainer {
+    display: flex;
+    justify-content: center;
+}
+
+.button {
+    margin-left: 2rem;
+    width: 7rem;
+    background-color: transparent;
+    border: 3px solid white;
+    text-align: center;
+    height: 3rem;
+}
+
+.input {
+    height: 3rem;
+}
+
+.button:hover {
+    background-color: rgb(175, 174, 174) !important;
+}
+
+.inputContainer {
+    width: 41rem;
+}
+
+.todolistContainer {
+    margin-top: 4rem;
+    display: flex;
+    justify-content: center;
+}
+
+.table {
+    width: 50rem;
+    background-color: transparent !important;
+}
+
+.deleteIcon {
+    color: red;
+}
+
+.errors {
+    font-size: large;
+    color: red;
+    margin-top: 1rem;
+}
