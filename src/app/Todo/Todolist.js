@@ -5,15 +5,14 @@ import styles from './todo.module.css'
 import { Space, Table, Button } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
 import { useAppSelector, useAppDispatch } from '@/lib/hooks';
-//import { deleteTodo } from '@/lib/features/todoSlice';
+import { deleteTodo } from '@/lib/features/todoSlice';
 import { fetchTodos } from '@/lib/features/todoSlice';
 
 
 
 function Todolist() {
-    //selector calls the store. So check what is in store. Todos are there so data.todos
-    //const data = useAppSelector((state) => state.todos)
     const dispatch = useAppDispatch();
+    //useSelector is subscribed to store so when state changes, it runs 
     const { data, loading, error } = useAppSelector((state) => state.todos);
 
     useEffect(() => {
@@ -21,9 +20,18 @@ function Todolist() {
     }, [dispatch]);
 
 
-    // function handleDelete(record) {
-    //     dispatch(deleteTodo(record.id))
-    // }
+    function handleDelete(record) {
+        dispatch(deleteTodo(record.id))
+            .then(() => {
+                // After successful deletion, fetch the updated list of todos
+                dispatch(fetchTodos());
+            })
+            .catch(error => {
+                // Handle any errors that occur during deletion
+                console.error('Error deleting todo:', error);
+            });
+
+    }
 
     const columns = [
         {

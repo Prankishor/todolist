@@ -2,6 +2,8 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { api } from './../../axios/axios'
 
+
+//it is meant to interact with other interfaces
 export const fetchTodos = createAsyncThunk(
   'todos/fetchTodos',
   async () => {
@@ -16,12 +18,29 @@ export const fetchTodos = createAsyncThunk(
   }
 )
 
+export const deleteTodo = createAsyncThunk(
+  'todos/deleteTodo',
+  async (id) => {
+    try {
+      const response = await api.delete(`/todoList/${id}`)
+      return response.data
+    }
+    catch (err) {
+      return err.response.data
+    }
+  }
+)
+
+
+//this is state
 const initialState = {
   data: null,
   loading: false,
   error: null
 }
 
+
+//It is meant to change state in store
 export const todoSlice = createSlice({
   name: 'slicetodo',
   initialState,
@@ -40,6 +59,10 @@ export const todoSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
       })
+      .addCase(deleteTodo.rejected, (state, action) => {
+        state.error = action.payload
+      })
+
   }
   //action creators 
 
