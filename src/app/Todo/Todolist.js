@@ -1,23 +1,29 @@
 'use client'
 
-import React from 'react'
+import React, { useEffect } from 'react'
 import styles from './todo.module.css'
 import { Space, Table, Button } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
 import { useAppSelector, useAppDispatch } from '@/lib/hooks';
-import { deleteTodo } from '@/lib/features/todoSlice';
+//import { deleteTodo } from '@/lib/features/todoSlice';
+import { fetchTodos } from '@/lib/features/todoSlice';
 
 
 
 function Todolist() {
     //selector calls the store. So check what is in store. Todos are there so data.todos
-    const data = useAppSelector((state) => state.todos)
+    //const data = useAppSelector((state) => state.todos)
     const dispatch = useAppDispatch();
+    const { data, loading, error } = useAppSelector((state) => state.todos);
 
-    function handleDelete(record) {
-        //console.log("TO DELETE: " + record.id)
-        dispatch(deleteTodo(record.id))
-    }
+    useEffect(() => {
+        dispatch(fetchTodos());
+    }, [dispatch]);
+
+
+    // function handleDelete(record) {
+    //     dispatch(deleteTodo(record.id))
+    // }
 
     const columns = [
         {
@@ -45,6 +51,12 @@ function Todolist() {
         },
     ];
 
+    if (loading) {
+        return <div>Loading...</div>
+    }
+    if (error) {
+        return <div>Error: {error.message}</div>
+    }
     return (
         <div>
             <Table

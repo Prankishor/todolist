@@ -5,8 +5,8 @@ import styles from './todo.module.css'
 import { Input, Button, Flex } from 'antd';
 import Todolist from './Todolist';
 import { useFormik } from 'formik';
-import { useAppDispatch, useAppSelector } from '@/lib/hooks';
-import { addTodo } from '@/lib/features/todoSlice';
+import { useAppDispatch } from '@/lib/hooks';
+// import { addTodo } from '@/lib/features/todoSlice';
 
 const validate = values => {
     const errors = {};
@@ -19,7 +19,6 @@ const validate = values => {
 function Todo() {
 
     const dispatch = useAppDispatch();
-    const todolist = useAppSelector((data) => data.todos)
 
     const formik = useFormik({
         initialValues: {

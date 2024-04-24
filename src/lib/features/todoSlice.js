@@ -1,31 +1,64 @@
 
-import { createSlice } from '@reduxjs/toolkit'
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { api } from './../../axios/axios'
 
-const initialState = [
-  { id: 1, todo: "A dummy todo item" }
-]
+export const fetchTodos = createAsyncThunk(
+  'todos/fetchTodos',
+  async () => {
+    try {
+      const response = await api.get('/todoList/');
+      console.log("REPONSE : " + response)
+      return response.data;
+    }
+    catch (err) {
+      return err.response.data
+    }
+  }
+)
+
+const initialState = {
+  data: null,
+  loading: false,
+  error: null
+}
 
 export const todoSlice = createSlice({
   name: 'slicetodo',
   initialState,
-  reducers: {
+  reducers: {},
 
-    //action creators 
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchTodos.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(fetchTodos.fulfilled, (state, action) => {
+        state.loading = false;
+        state.data = action.payload
+      })
+      .addCase(fetchTodos.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+  }
+  //action creators 
 
-    addTodo: (state, action) => {
-      const { id, todo } = action.payload
-      state.push({ id, todo })
-    },
+  // addTodo: (state, action) => {
+  //   const { id, todo } = action.payload
+  //   state.push({ id, todo })
+  // },
 
-    deleteTodo: (state, action) => {
+  // deleteTodo: (state, action) => {
 
-      console.log("FROM DELETE ACTION: " + action.payload)
-      const id = action.payload;
-      return state.filter((data) => data.id !== id)
-    },
-  },
+  //   console.log("FROM DELETE ACTION: " + action.payload)
+  //   const id = action.payload;
+  //   return state.filter((data) => data.id !== id)
+  // },
+  // },
 })
 
-export const { addTodo, deleteTodo } = todoSlice.actions
+// export const { addTodo, deleteTodo } = todoSlice.actions
+
+// export default todoSlice.reducer
 
 export default todoSlice.reducer
