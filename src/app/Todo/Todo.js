@@ -6,7 +6,8 @@ import { Input, Button, Flex } from 'antd';
 import Todolist from './Todolist';
 import { useFormik } from 'formik';
 import { useAppDispatch } from '@/lib/hooks';
-// import { addTodo } from '@/lib/features/todoSlice';
+import { addTodo } from '@/lib/features/todoSlice';
+import { fetchTodos } from '@/lib/features/todoSlice';
 
 const validate = values => {
     const errors = {};
@@ -28,10 +29,16 @@ function Todo() {
         onSubmit: (values) => {
             //alert(JSON.stringify(values, null, 2));
             const data = {
-                id: Math.floor((Math.random() * 100) + 1),
                 todo: values.todo
             }
             dispatch(addTodo(data))
+                .then(() => {
+                    dispatch(fetchTodos());
+                })
+                .catch(error => {
+                    // Handle any errors that occur during deletion
+                    console.error('Error adding todo:', error);
+                });
         },
     })
 

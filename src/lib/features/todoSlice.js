@@ -31,6 +31,19 @@ export const deleteTodo = createAsyncThunk(
   }
 )
 
+export const addTodo = createAsyncThunk(
+  'todos/addTodo',
+  async (data) => {
+    try {
+      const response = await api.post('/todoList/', data)
+      return response.data
+    }
+    catch (err) {
+      return err.response.data
+    }
+  }
+)
+
 
 //this is state
 const initialState = {
@@ -61,6 +74,16 @@ export const todoSlice = createSlice({
       })
       .addCase(deleteTodo.rejected, (state, action) => {
         state.error = action.payload
+      })
+      .addCase(addTodo.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(addTodo.fulfilled, (state, action) => {
+        state.loading = false
+      })
+      .addCase(addTodo.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
       })
 
   }
